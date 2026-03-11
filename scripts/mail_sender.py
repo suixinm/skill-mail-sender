@@ -186,6 +186,7 @@ class MailConfig:
     def _get_config_paths(self, custom_path: Optional[str] = None) -> List[str]:
         """获取配置文件路径列表（按优先级排序）"""
         paths = []
+        home_dir = os.path.expanduser('~')
         
         # 1. 自定义路径
         if custom_path:
@@ -196,11 +197,13 @@ class MailConfig:
         if env_path:
             paths.append(env_path)
         
-        # 3. ~/.openclaw/skills/mail-sender/config.json（推荐）
-        home_dir = os.path.expanduser('~')
+        # 3. 技能安装目录下的配置（优先）
         paths.append(os.path.join(home_dir, '.openclaw', 'skills', SKILL_NAME, CONFIG_FILE_NAME))
         
-        # 4. Skill 脚本目录
+        # 4. 独立技能配置目录（不受技能卸载影响，备选）
+        paths.append(os.path.join(home_dir, '.openclaw', 'skills', 'config', SKILL_NAME, CONFIG_FILE_NAME))
+        
+        # 5. Skill 脚本目录
         skill_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(skill_dir)
         if os.path.basename(parent_dir) == 'scripts':
@@ -209,7 +212,7 @@ class MailConfig:
         else:
             paths.append(os.path.join(skill_dir, CONFIG_FILE_NAME))
         
-        # 5. 当前工作目录
+        # 6. 当前工作目录
         paths.append('.mail-sender-config.json')
         
         return paths

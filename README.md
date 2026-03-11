@@ -63,9 +63,12 @@ $env:MAIL_DEFAULT_RECEIVERS="default@example.com"
 #### 配置文件查找顺序
 
 1. `MAIL_CONFIG_PATH` 环境变量指定的路径
-2. `~/.openclaw/skills/mail-sender/config.json`（推荐）
-3. `{skill_dir}/config.json`
-4. `./.mail-sender-config.json`
+2. `~/.openclaw/skills/mail-sender/config.json`（优先）
+3. `~/.openclaw/skills/config/mail-sender/config.json`（备选，卸载技能不影响配置）
+4. `{skill_dir}/config.json`
+5. `./.mail-sender-config.json`
+
+> **注意**：推荐将配置文件放在 `~/.openclaw/skills/config/` 目录下，独立于技能安装目录，卸载重装技能不会丢失配置。
 
 ### 2. 发送邮件
 
