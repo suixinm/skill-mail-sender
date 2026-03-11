@@ -1,5 +1,5 @@
 ---
-name: mail-sender
+name: skill-mail-sender
 description: 邮件发送工具，支持 HTML 和 Markdown 格式。当用户需要发送邮件、通知、报告、提醒或任何邮件相关任务时使用此技能。触发场景包括：(1) 发送 HTML 格式邮件，(2) 发送 Markdown 格式邮件（自动转换为 HTML），(3) 批量发送邮件给多个收件人，(4) 发送系统通知或报告，(5) 发送带格式的内容（表格、代码等）。
 ---
 
@@ -26,12 +26,12 @@ pip install -r requirements.txt
 ### 配置文件位置（按优先级）
 
 1. `MAIL_CONFIG_PATH` 环境变量指定的路径
-2. `~/.openclaw/skills/mail-sender/config.json`（优先）
-3. `~/.openclaw/skills/config/mail-sender/config.json`（备选，卸载技能不影响配置）
+2. `~/.openclaw/skills/skill-mail-sender/config.json`（优先）
+3. `~/.openclaw/skills/config/skill-mail-sender/config.json`（备选，卸载技能不影响配置）
 4. `{skill_dir}/config.json`
-5. `./.mail-sender-config.json`
+5. `./.skill-mail-sender-config.json`
 
-> **推荐**：使用 `~/.openclaw/skills/config/mail-sender/config.json`，独立于技能安装目录。
+> **推荐**：使用 `~/.openclaw/skills/config/skill-mail-sender/config.json`，独立于技能安装目录。
 
 ### 配置文件示例
 
@@ -52,6 +52,7 @@ pip install -r requirements.txt
 export MAIL_SENDER_EMAIL="your_email@163.com"
 export MAIL_SENDER_PASSWORD="your_auth_code"
 export MAIL_DEFAULT_RECEIVERS="default@example.com"
+export MAIL_CONFIG_PATH="/path/to/config.json"  # 可选，自定义配置文件路径
 ```
 
 ## 使用方法

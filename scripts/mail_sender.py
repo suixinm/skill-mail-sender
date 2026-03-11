@@ -10,7 +10,7 @@
 - 完善的错误处理和日志记录
 
 配置优先级：参数 > 环境变量 > 配置文件 > 默认值
-配置文件路径：~/.openclaw/skills/mail-sender/config.json
+配置文件路径：~/.openclaw/skills/skill-mail-sender/config.json
 """
 
 import smtplib
@@ -40,7 +40,7 @@ DEFAULTS = {
 }
 
 CONFIG_FILE_NAME = 'config.json'
-SKILL_NAME = 'mail-sender'
+SKILL_NAME = 'skill-mail-sender'
 
 
 class ConfigError(Exception):
@@ -149,9 +149,9 @@ class MailConfig:
         查找优先级：
         1. custom_path（自定义路径）
         2. MAIL_CONFIG_PATH 环境变量
-        3. ~/.openclaw/skills/mail-sender/config.json（推荐）
+        3. ~/.openclaw/skills/skill-mail-sender/config.json（推荐）
         4. {skill_dir}/config.json
-        5. ./.mail-sender-config.json
+        5. ./.skill-mail-sender-config.json
         """
         config_paths = self._get_config_paths(custom_path)
         
@@ -186,7 +186,6 @@ class MailConfig:
     def _get_config_paths(self, custom_path: Optional[str] = None) -> List[str]:
         """获取配置文件路径列表（按优先级排序）"""
         paths = []
-        home_dir = os.path.expanduser('~')
         
         # 1. 自定义路径
         if custom_path:
@@ -197,13 +196,11 @@ class MailConfig:
         if env_path:
             paths.append(env_path)
         
-        # 3. 技能安装目录下的配置（优先）
+        # 3. ~/.openclaw/skills/skill-mail-sender/config.json（推荐）
+        home_dir = os.path.expanduser('~')
         paths.append(os.path.join(home_dir, '.openclaw', 'skills', SKILL_NAME, CONFIG_FILE_NAME))
         
-        # 4. 独立技能配置目录（不受技能卸载影响，备选）
-        paths.append(os.path.join(home_dir, '.openclaw', 'skills', 'config', SKILL_NAME, CONFIG_FILE_NAME))
-        
-        # 5. Skill 脚本目录
+        # 4. Skill 脚本目录
         skill_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(skill_dir)
         if os.path.basename(parent_dir) == 'scripts':
@@ -212,8 +209,8 @@ class MailConfig:
         else:
             paths.append(os.path.join(skill_dir, CONFIG_FILE_NAME))
         
-        # 6. 当前工作目录
-        paths.append('.mail-sender-config.json')
+        # 5. 当前工作目录
+        paths.append('.skill-mail-sender-config.json')
         
         return paths
     
@@ -224,7 +221,7 @@ class MailConfig:
             raise ConfigError(
                 "缺少发件人邮箱！请通过以下方式之一配置：\n"
                 "1. 环境变量：MAIL_SENDER_EMAIL\n"
-                "2. 配置文件：~/.openclaw/skills/mail-sender/config.json\n"
+                "2. 配置文件：~/.openclaw/skills/skill-mail-sender/config.json\n"
                 "3. 构造函数参数：sender_email"
             )
         
@@ -232,7 +229,7 @@ class MailConfig:
             raise ConfigError(
                 "缺少发件人密码/授权码！请通过以下方式之一配置：\n"
                 "1. 环境变量：MAIL_SENDER_PASSWORD\n"
-                "2. 配置文件：~/.openclaw/skills/mail-sender/config.json\n"
+                "2. 配置文件：~/.openclaw/skills/skill-mail-sender/config.json\n"
                 "3. 构造函数参数：sender_password"
             )
         
